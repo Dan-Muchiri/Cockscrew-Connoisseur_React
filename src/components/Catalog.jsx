@@ -1,10 +1,18 @@
 import { Box, Text, VStack, Image, Flex, Button } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { useColorModeValue } from '@chakra-ui/react';
+import useStore from "../store";
+import { Link } from "react-router-dom";
 
 function Catalog() {
   const [items, setItems] = useState([]);
   const textColor = useColorModeValue("wine.red", "white"); 
+
+  const setSelectedItem = useStore((state) => state.setSelectedItem); // Get the setSelectedItem function from the store
+
+  const handleSelectItem = (item) => {
+    setSelectedItem(item);
+  };
 
 
   useEffect(() => {
@@ -14,14 +22,10 @@ function Catalog() {
       .catch((error) => console.error("Error fetching items:", error));
   }, []);
 
-  // Function to handle adding an item to the cart
-  const handleAddToCart = (itemId) => {
-    // Logic to add item to the cart goes here
-    console.log(`Item with ID ${itemId} added to cart.`);
-  };
 
   return (
-    <Box mt={3} maxW="70%" maxH='80vh' overflowY='auto'>
+    <Flex alignItems='center' justifyContent='center'>
+    <Box mt={3} maxW="70%" maxH='84vh' overflowY='auto'>
       <Text fontSize="2xl" fontWeight="bold" mb={2} textAlign="center">
         Catalog
       </Text>
@@ -59,14 +63,17 @@ function Catalog() {
               <Text fontSize="md" fontWeight="bold" mb={2} color={textColor}>
                 ${item.price}
               </Text>
-              <Button onClick={() => handleAddToCart(item.id)}>
-                Add to Cart
+              <Link to={`/details/${item.id}`} key={item.id}>
+              <Button onClick={() => handleSelectItem(item)}>
+                Preview
               </Button>
+                </Link>
             </VStack>
           </Box>
         ))}
       </Flex>
     </Box>
+    </Flex>
   );
 }
 
