@@ -4,7 +4,7 @@ import { FaWineBottle } from "react-icons/fa";
 function About() {
   return (
     <Box pt="100px" maxW="80%" mx="auto" textAlign="justify">
-      <Heading as="h2" fontSize="3xl" mb="6" textAlign="left" color="wine.red" fontFamily="Lobster">
+      <Heading as="h2" fontSize="4xl" mb="6" textAlign="left" color="wine.red" fontFamily="Rancho">
         About Us
       </Heading>
       <Text fontSize="3xl" mb="8" color="gray.700" fontFamily="Rancho">
@@ -13,7 +13,7 @@ function About() {
 
       <Divider mb="8" />
 
-      <Heading as="h3" fontSize="2xl" mb="6" color="wine.red" fontFamily="Lobster">
+      <Heading as="h3" fontSize="3xl" mb="6" color="wine.red" fontFamily="Rancho">
         Our Mission
       </Heading>
       <Text fontSize="3xl" mb="8" color="gray.700" fontFamily="Rancho">
@@ -22,7 +22,7 @@ function About() {
 
       <Divider mb="8" />
 
-      <Heading as="h3" fontSize="2xl" mb="6" color="wine.red" fontFamily="Lobster">
+      <Heading as="h3" fontSize="3xl" mb="6" color="wine.red" fontFamily="Rancho">
         Our Team
       </Heading>
       <Text fontSize="3xl" mb="4" color="gray.700" fontFamily="Rancho">
@@ -34,7 +34,7 @@ function About() {
 
       <Divider mb="8" />
 
-      <Heading as="h3" fontSize="2xl" mb="6" color="wine.red" fontFamily="Lobster">
+      <Heading as="h3" fontSize="3xl" mb="6" color="wine.red" fontFamily="Rancho">
         Our Commitment to Quality
       </Heading>
       <Text fontSize="3xl" mb="8" color="gray.700" fontFamily="Rancho">
@@ -43,7 +43,7 @@ function About() {
 
       <Divider mb="8" />
 
-      <Heading as="h3" fontSize="2xl" mb="6" color="wine.red" fontFamily="Lobster">
+      <Heading as="h3" fontSize="3xl" mb="6" color="wine.red" fontFamily="Rancho">
         Contact Us
       </Heading>
       <Flex alignItems="center" mb="4">
