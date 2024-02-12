@@ -23,7 +23,7 @@ function Details() {
   }
 
   return (
-    <Box mt={3} maxW="100%" maxH='84vh' overflowY='auto' textAlign="center">
+    <Box pt='90px' maxW="100%" textAlign="center">
       <Text fontSize="2xl" fontWeight="bold" mb={2}>
         Details
       </Text>
