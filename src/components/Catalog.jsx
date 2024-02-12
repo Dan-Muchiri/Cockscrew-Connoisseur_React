@@ -25,7 +25,7 @@ function Catalog() {
 
   const filteredItems = items.filter(item => {
     const vintageLowerCase = item.vintage.toString().toLowerCase();
-    const abvLowerCase = item.abv.toString().toLowerCase(); // Convert abv to string and lowercase
+    const abvLowerCase = item.abv.toString().toLowerCase(); 
     const searchQueryLowerCase = searchQuery.toLowerCase();
     
     return (
@@ -35,7 +35,7 @@ function Catalog() {
       item.region.toLowerCase().includes(searchQueryLowerCase) ||
       item.producer.toLowerCase().includes(searchQueryLowerCase) ||
       vintageLowerCase.includes(searchQueryLowerCase) ||
-      abvLowerCase.includes(searchQueryLowerCase) // Include abv in search
+      abvLowerCase.includes(searchQueryLowerCase)
     );
   });
   return (
@@ -89,7 +89,7 @@ function Catalog() {
                 <Text fontSize="md" fontWeight="bold" mb={2} color={textColor}>
                   ${item.price}
                 </Text>
-                <Link to={`/details/${item.id}`} key={item.id}>
+                <Link to={`/details/${item.id}`}>
                   <Button onClick={() => handleSelectItem(item)}>Preview</Button>
                 </Link>
               </VStack>

@@ -1,25 +1,28 @@
 import { Box, Text, VStack, Image, Flex, Button } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
+import useStore from "../store";
 import { useEffect, useState } from "react";
 import { useColorModeValue } from '@chakra-ui/react';
 import { Link } from "react-router-dom";
 
 function Details() {
-  const { itemId } = useParams(); // Get the item ID from URL parameters
+  const selectedItem = useStore(state => state.selectedItem); // Get the selected item ID from the store
   const [itemDetails, setItemDetails] = useState(null);
 
   useEffect(() => {
-    // Fetch details from db.json based on the item ID
-    fetch(`http://localhost:3000/wines/${itemId}`)
-      .then((response) => response.json())
-      .then((data) => setItemDetails(data))
-      .catch((error) => console.error("Error fetching item details:", error));
-  }, [itemId]);
+    if (selectedItem) {
+      fetch(`http://localhost:3000/wines/${selectedItem.id}`)
+        .then((response) => response.json())
+        .then((data) => setItemDetails(data))
+        .catch((error) => console.error("Error fetching item details:", error));
+    }
+  }, [selectedItem]);
 
   const textColor = useColorModeValue("wine.red", "white"); 
 
-  function handleAddToCart(item){
-
+  function handleAddToCart(itemDetails) {
+    // Pass the itemDetails to the store
+    // This is where you might want to implement your cart functionality
+    console.log("Added to cart:", itemDetails);
   }
 
   return (
@@ -38,12 +41,12 @@ function Details() {
               height="200px"
             />
             <Button mt={14} mr={4} onClick={() => handleAddToCart(itemDetails)}>
-                Add To Cart
+              Add To Cart
             </Button>
             <Link to="/">
-                <Button mt={14}>
-                    Back to Catalog
-                </Button>
+              <Button mt={14}>
+                Back to Catalog
+              </Button>
             </Link>
           </Box>
           <Box
