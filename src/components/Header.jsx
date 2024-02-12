@@ -18,9 +18,16 @@ function Header() {
               objectFit="contain"
               height='69px'
             />
-          <Heading as="h1" fontSize="3xl" fontWeight="bold" color={textColor} fontFamily='Dancing Script'>
+          <Heading
+            as="h1"
+            fontSize={{ base: "xl", md: "3xl" }} // Adjust font size based on screen size
+            fontWeight="bold"
+            color={textColor}
+            fontFamily='Dancing Script'
+          >
             Cockscrew Connoisseur
-          </Heading>
+        </Heading>
+
         </Flex>
        
 
