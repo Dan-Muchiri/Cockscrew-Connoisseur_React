@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Flex, Heading, IconButton, Button, Image, Icon, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, IconButton, Image, Icon, Text } from "@chakra-ui/react";
 import { FaCartPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import useCartStore from '../store';
@@ -52,10 +52,10 @@ function Header() {
             />
          <Heading
           as="h1"
-          fontSize={{ base: "xl", md: "3xl" }}
+          fontSize={{ base: "xl", md: "5xl" }}
           fontWeight="bold" // Increase the font weight to extrabold
           color={textColor}
-          fontFamily='Dancing Script'
+          fontFamily="Rancho"
         >
           Corkscrew Connoisseur
         </Heading>

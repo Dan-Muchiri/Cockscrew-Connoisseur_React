@@ -3,11 +3,11 @@ import { FaWineBottle } from "react-icons/fa";
 
 function About() {
   return (
-    <Box pt="100px" maxW="80%" mx="auto" textAlign="justify">
-      <Heading as="h2" fontSize="4xl" mb="6" textAlign="left" color="wine.red" fontFamily="Rancho">
+    <Box pt="100px" maxW="85%" mx="auto" textAlign="justify" boxShadow='xl' px='80px' pb={1} mb={4}>
+      <Heading as="h3" fontSize="3xl" mb="6" color="wine.red" fontFamily="Rancho">
         About Us
       </Heading>
-      <Text fontSize="3xl" mb="8" color="gray.700" fontFamily="Rancho">
+      <Text fontSize="xl" mb="8" color="gray.700">
         Welcome to Cockscrew Connoisseur, your premier destination for discovering and enjoying the world's finest wines. Our passion for wine runs deep, and we're dedicated to sharing that passion with you. Whether you're a seasoned oenophile or just beginning your journey into the world of wine, we're here to guide you every step of the way.
       </Text>
 
@@ -16,7 +16,7 @@ function About() {
       <Heading as="h3" fontSize="3xl" mb="6" color="wine.red" fontFamily="Rancho">
         Our Mission
       </Heading>
-      <Text fontSize="3xl" mb="8" color="gray.700" fontFamily="Rancho">
+      <Text fontSize="xl" mb="8" color="gray.700">
         At Cockscrew Connoisseur, our mission is simple: to provide you with an unparalleled wine-buying experience. We strive to offer a carefully curated selection of wines from around the globe, each chosen for its exceptional quality and unique character. We believe that every bottle tells a story, and we're here to help you discover the perfect wine for any occasion.
       </Text>
 
@@ -25,10 +25,10 @@ function About() {
       <Heading as="h3" fontSize="3xl" mb="6" color="wine.red" fontFamily="Rancho">
         Our Team
       </Heading>
-      <Text fontSize="3xl" mb="4" color="gray.700" fontFamily="Rancho">
+      <Text fontSize="xl" mb="4" color="gray.700">
         Our team of wine experts is dedicated to bringing you the best selection of wines available. With years of experience in the industry, our sommeliers and connoisseurs are passionate about sharing their knowledge and expertise with you. Whether you're looking for recommendations, food pairings, or tasting notes, our team is here to help you navigate the world of wine with confidence and ease.
       </Text>
-      <Text fontSize="3xl" mb="8" color="gray.700" fontFamily="Rancho">
+      <Text fontSize="xl" mb="8" color="gray.700">
         Meet the faces behind Cockscrew Connoisseur and discover why we're your trusted source for exceptional wines.
       </Text>
 
@@ -37,7 +37,7 @@ function About() {
       <Heading as="h3" fontSize="3xl" mb="6" color="wine.red" fontFamily="Rancho">
         Our Commitment to Quality
       </Heading>
-      <Text fontSize="3xl" mb="8" color="gray.700" fontFamily="Rancho">
+      <Text fontSize="xl" mb="8" color="gray.700">
         Quality is at the heart of everything we do. From our rigorous selection process to our commitment to customer satisfaction, we hold ourselves to the highest standards in the industry. Every wine in our collection is carefully vetted to ensure it meets our strict criteria for excellence, so you can shop with confidence knowing that you're getting the best of the best.
       </Text>
 
@@ -47,8 +47,8 @@ function About() {
         Contact Us
       </Heading>
       <Flex alignItems="center" mb="4">
-        <Icon as={FaWineBottle} boxSize={6} color="wine.red" mr="2" />
-        <Text fontSize="3xl" color="gray.700" fontFamily="Rancho">
+        <Icon as={FaWineBottle} boxSize={8} color="wine.red" mr="4" />
+        <Text fontSize="xl" color="gray.700">
           Have questions or need assistance? We're here to help! Contact our customer service team for personalized recommendations, order assistance, or any other inquiries you may have.
         </Text>
       </Flex>
