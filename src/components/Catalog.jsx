@@ -1,21 +1,14 @@
-import { Box, Text, VStack, Image, Flex, Button, Input } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
-import { useColorModeValue } from '@chakra-ui/react';
-import useStore from "../store";
+import React, { useState, useEffect } from "react";
+import { Box, Text, VStack, Image, Flex, Button, Input, Badge, HStack } from "@chakra-ui/react";
+import { InfoIcon, AddIcon } from '@chakra-ui/icons'; 
 import { Link } from "react-router-dom";
+import useCartStore from '../store';
 
 function Catalog() {
   const [items, setItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const { fetchCartItems } = useCartStore();
   
-  const textColor = useColorModeValue("wine.red", "white"); 
-
-  const setSelectedItem = useStore((state) => state.setSelectedItem); // Get the setSelectedItem function from the store
-
-  const handleSelectItem = (item) => {
-    setSelectedItem(item);
-  };
-
   useEffect(() => {
     fetch("http://localhost:3000/wines")
       .then((response) => response.json())
@@ -24,20 +17,49 @@ function Catalog() {
   }, []);
 
   const filteredItems = items.filter(item => {
-    const vintageLowerCase = item.vintage.toString().toLowerCase();
-    const abvLowerCase = item.abv.toString().toLowerCase(); 
     const searchQueryLowerCase = searchQuery.toLowerCase();
-    
     return (
       item.type.toLowerCase().includes(searchQueryLowerCase) ||
       item.name.toLowerCase().includes(searchQueryLowerCase) ||
       item.description.toLowerCase().includes(searchQueryLowerCase) ||
       item.region.toLowerCase().includes(searchQueryLowerCase) ||
-      item.producer.toLowerCase().includes(searchQueryLowerCase) ||
-      vintageLowerCase.includes(searchQueryLowerCase) ||
-      abvLowerCase.includes(searchQueryLowerCase)
+      item.producer.toLowerCase().includes(searchQueryLowerCase)
     );
   });
+
+  const addToCart = async (item) => {
+    try {
+      // Add the "quantity" key with the initial value of 1 to the item object
+      const itemWithQuantity = { ...item, quantity: 1 };
+  
+      // Calculate the total price based on the item price and quantity
+      const totalPrice = item.price * itemWithQuantity.quantity;
+  
+      // Add the "total" key with the total price to the item object
+      const itemWithTotal = { ...itemWithQuantity, total: totalPrice };
+  
+      // Send the modified item object to the server
+      const response = await fetch('http://localhost:3000/cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(itemWithTotal),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to add item to cart');
+      }
+      alert('Item added to cart');
+    } catch (error) {
+      console.error('Error adding item to cart:', error);
+      alert('Item already in cart');
+    }
+    fetchCartItems();
+  };
+  
+  
+
   return (
     <Flex alignItems='center' justifyContent='center' direction='column' pt='75px'>
       <Box mt={4} maxW="90%" >
@@ -51,25 +73,25 @@ function Catalog() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             mb={5}
-            maxW='90%'
+            maxW='95%'
             boxShadow="md"
           />
         </Flex>
-        <Flex flexWrap="wrap" justifyContent="center" alignItems="stretch" gap={2}>
+        <Flex flexWrap="wrap" justifyContent="center" alignItems="stretch" gap={4} boxShadow='2xl' pb={5} mb={5}>
           {filteredItems.map((item) => (
             <Box
-              key={item.id}
-              p={4}
-              bg="white"
-              borderRadius="md"
-              boxShadow="md"
-              textAlign="center"
-              width="250px"
-              minHeight="400px"
-              mb={4}
-              borderWidth="1px"
-              borderColor="gray.200"
-              transition="all 0.2s"
+            key={item.id}
+            p={4}
+            bg="white"
+            borderRadius="md"
+            boxShadow="md"
+            textAlign="center"
+            width="250px"
+            minHeight="400px"
+            mb={4}
+            borderWidth="1px"
+            borderColor="gray.200"
+            transition="all 0.2s"
               _hover={{
                 boxShadow: "lg",
                 borderColor: "wine.red",
@@ -80,18 +102,52 @@ function Catalog() {
                 alt={item.name}
                 objectFit="cover"
                 borderTopRadius="md"
-                height="200px"
+                maxHeight="200px"
+                maxW='160px'
               />
-              <VStack spacing={2} align="center" mt={4}>
-                <Text fontSize="md" mb={1} color={textColor}>
-                  {item.name}
+              <VStack spacing={2} align="start" mt={4}>
+                <HStack alignItems='start'>
+                  <Badge borderRadius="full"  colorScheme="wine">
+                    {item.type}
+                  </Badge>
+                  <Text color="wine.red" isTruncated>
+                    {/* Truncate the wine name if it's too long */}
+                    {item.name.length > 19 ? item.name.slice(0, 19) + '...' : item.name}
+                  </Text>
+                </HStack>
+                <Text textAlign="left" textTransform="uppercase" fontSize="sm" fontWeight="bold" color="wine.red">
+                  {item.region}
                 </Text>
-                <Text fontSize="md" fontWeight="bold" mb={2} color={textColor}>
+                <Text fontSize="md" fontWeight="bold"  color="wine.red">
                   ${item.price}
                 </Text>
-                <Link to={`/details/${item.id}`}>
-                  <Button onClick={() => handleSelectItem(item)}>Preview</Button>
-                </Link>
+                <Button
+                  as={Link}
+                  to={`/product/${item.id}`}
+                  leftIcon={<InfoIcon />}
+                  colorScheme="wine"
+                  variant="outline"
+                  size="sm"
+                  py={2}
+                  px={3}
+                  _hover={{
+                    bg: "wine.black",
+                    color: "white",
+                  }}
+                >
+                  Read More
+                </Button>
+                <Button
+                  onClick={() => addToCart(item)}
+                  leftIcon={<AddIcon />}
+                  colorScheme="wine"
+                  variant="solid"
+                  size="sm"
+                  py={2}
+                  px={3}
+                >
+                  Add to Cart
+                </Button>
               </VStack>
             </Box>
           ))}

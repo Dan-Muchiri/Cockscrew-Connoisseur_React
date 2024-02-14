@@ -1,8 +1,18 @@
-import {create} from "zustand";
+// cartStore.js
+import create from 'zustand';
 
-const useStore = create((set) => ({
-  selectedItem: null,
-  setSelectedItem: (item) => set({ selectedItem: item }),
+const useCartStore = create((set) => ({
+  cartItems: [],
+  fetchCartItems: async () => {
+    try {
+      const response = await fetch('http://localhost:3000/cart');
+      const cartData = await response.json();
+      set({ cartItems: cartData.length });
+    } catch (error) {
+      console.error('Error fetching cart items:', error);
+    }
+  },
 }));
 
-export default useStore;
+export default useCartStore;
+

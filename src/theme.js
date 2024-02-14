@@ -14,7 +14,12 @@ const theme = extendTheme({
       red: "#8B0000", // Deep red, reminiscent of red wine
       white: "#F5F5F5", // Off-white, like the color of wine labels or corks
       gold: "#FFD700", // Golden, representing the richness of wine
+      black: "#000000", // Black, for additional contrast
+      blue: "#0000FF", // Blue, for links or primary actions
+      yellow: "#FFFF00", // Yellow, for warnings or attention-seeking elements
+      purple: "#800080", // Purple, for special or unique elements
     },
+   
   },
   components: {
     Button: {
@@ -28,8 +33,16 @@ const theme = extendTheme({
         solid: {
           bg: "wine.red", // Background color for light mode
           color: "white", // Text color for light mode
+          borderColor: "wine.red", // Border color on hover for light mode
+          borderWidth: "1px", // Border width
+          borderStyle: "solid", // Border style
+          transition: "0.25s",
           _hover: {
-            bg: "wine.gold", // Background color on hover for light mode
+            bg: "white", 
+            color: "wine.red",
+            borderColor: "wine.red", // Border color on hover for light mode
+            borderWidth: "1px", // Border width
+            borderStyle: "solid", // Border style
           },
         },
       },

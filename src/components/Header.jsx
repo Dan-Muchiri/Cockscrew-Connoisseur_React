@@ -1,11 +1,43 @@
-import { Box, Flex, Heading, IconButton, Image, Icon, Text } from "@chakra-ui/react";
+import React, { useState, useEffect } from 'react';
+import { Box, Flex, Heading, IconButton, Button, Image, Icon, Text } from "@chakra-ui/react";
 import { FaCartPlus } from "react-icons/fa";
-import { useColorModeValue } from '@chakra-ui/react';
 import { Link } from "react-router-dom";
+import useCartStore from '../store';
 
 function Header() {
-  const bgColor = useColorModeValue("white", "wine.red"); // Set background color based on color mode
-  const textColor = useColorModeValue("wine.red", "white"); // Set text color based on color mode
+  const bgColor = "white"
+  const textColor ="wine.red"
+
+  const [activeUser, setActiveUser] = useState(null);
+  const { cartItems, fetchCartItems } = useCartStore();
+
+  useEffect(() => {
+    const fetchActiveUser = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/active-user');
+        const userData = await response.json();
+        setActiveUser(userData[0].username);
+      } catch (error) {
+        console.log('Not logged in');
+      }
+    };
+
+    fetchActiveUser();
+    fetchCartItems();
+  }, [cartItems]); // Trigger the effect whenever cartItems changes
+
+  const handleLogout = async () => {
+    try {
+      await fetch('http://localhost:3000/active-user/1', {
+        method: 'DELETE',
+      });
+      setActiveUser(null);
+      alert('Thank you for shopping with us!')
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
 
   return (
     <Box bg={bgColor} boxShadow="sm" py={1} position='fixed' w='100%' zIndex={10}>
@@ -18,14 +50,14 @@ function Header() {
               objectFit="contain"
               height='69px'
             />
-          <Heading
-            as="h1"
-            fontSize={{ base: "xl", md: "3xl" }} // Adjust font size based on screen size
-            fontWeight="bold"
-            color={textColor}
-            fontFamily='Dancing Script'
-          >
-            Cockscrew Connoisseur
+         <Heading
+          as="h1"
+          fontSize={{ base: "xl", md: "3xl" }}
+          fontWeight="bold" // Increase the font weight to extrabold
+          color={textColor}
+          fontFamily='Dancing Script'
+        >
+          Corkscrew Connoisseur
         </Heading>
 
         </Flex>
@@ -33,21 +65,29 @@ function Header() {
 
         {/* Navigation Links */}
         <Flex>
-          <Box as={Link} to="/" mr={10} color={textColor} _hover={{ textDecoration: "underline" }}>Home</Box>
-          <Box as={Link} to="/about" mr={10} color={textColor} _hover={{ textDecoration: "underline" }}>About</Box>
-          <Box as={Link} to="/login" mr={10} color={textColor} _hover={{ textDecoration: "underline" }}>Login | SignUp</Box>
+          <Box as={Link} to="/" mr={10} fontSize='18px'  color={textColor} _hover={{ textDecoration: "underline" }}>Home</Box>
+          <Box as={Link} to="/about" mr={10} fontSize='18px' color={textColor} _hover={{ textDecoration: "underline" }}>About</Box>
+          {activeUser ? (
+          <>
+            <Box as={Link}  mr={10}  fontSize='18px' color={textColor} _hover={{ textDecoration: "underline" }} onClick={handleLogout}>Sign out</Box>
+            <Text  fontWeight='bold' fontSize='18px' color={textColor} >{activeUser}</Text>
+          </>
+        ) : (
+          <Box as={Link} to="/login" mr={10}  fontSize='18px' color={textColor} _hover={{ textDecoration: "underline" }}>Login | SignUp</Box>
+        )}
         </Flex>
 
         {/* Cart Icon */}
-        <Flex alignItems="center">
+        <Flex as={Link} to="/cart" alignItems="center">
           <IconButton
             aria-label="Shopping Cart"
-            icon={<Icon as={FaCartPlus} boxSize={6} />} 
+            icon={<Icon as={FaCartPlus} boxSize={7} />} 
             bg="transparent"
+            borderStyle='none'
             color={textColor}
             _hover={{ color: "wine.gold" }}
           />
-          <Text ml={1}>0</Text>
+          <Text ml={1}>{cartItems}</Text>
         </Flex>
       </Flex>
     </Box>

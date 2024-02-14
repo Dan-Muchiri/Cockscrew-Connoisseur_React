@@ -5,11 +5,48 @@ import * as Yup from "yup";
 import { Link } from "react-router-dom";
 
 const Login = () => {
-  const handleSubmit = async (values, actions) => {
-    // Handle login logic here
-    console.log(values);
-    actions.setSubmitting(false);
+const handleSubmit = async (values, actions) => {
+    try {
+      // Check if the username exists in the database
+      const userResponse = await fetch(`http://localhost:3000/users?username=${values.username}`);
+      const userData = await userResponse.json();
+  
+      if (!userData || userData.length === 0) {
+        throw new Error("User not found");
+      }
+  
+      // Check if the provided password matches the one stored in the database
+      const user = userData[0];
+      if (user.password !== values.password) {
+        throw new Error("Incorrect password");
+      }
+  
+      // If username and password are correct, perform appropriate actions
+      await fetch('http://localhost:3000/active-user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: values.username }),
+      });
+
+      console.log("Login successful");
+  
+      // Reset form
+      actions.resetForm();
+
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Login error:", error);
+      // Display error message to the user
+      alert("Incorrect username or password. Please try again.");
+    } finally {
+      // Reset submitting state
+      actions.setSubmitting(false);
+    }
+
   };
+  
 
   return (
     <Formik

@@ -7,6 +7,9 @@ import Details from "./components/Details";
 import About from "./components/About";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
+import Cart from "./components/Cart";
+import CheckOut from "./components/CheckOut";
+
 
 function App() {
   return (
@@ -15,10 +18,12 @@ function App() {
         <Header />
         <Routes> 
           <Route path="/" element={<Catalog/>} /> 
-          <Route path="/details/:itemId" element={<Details />} /> 
+          <Route path="/product/:wineId" element={<Details />} /> 
           <Route path="/about" element={<About />} /> 
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<CheckOut />} />
         </Routes>
       </Router>
     </ChakraProvider>

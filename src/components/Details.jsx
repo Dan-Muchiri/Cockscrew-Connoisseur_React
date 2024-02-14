@@ -1,50 +1,93 @@
 import { Box, Text, VStack, Image, Flex, Button } from "@chakra-ui/react";
-import useStore from "../store";
+import { useParams } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { useColorModeValue } from '@chakra-ui/react';
 import { Link } from "react-router-dom";
+import useCartStore from '../store';
 
 function Details() {
-  const selectedItem = useStore(state => state.selectedItem); // Get the selected item ID from the store
-  const [itemDetails, setItemDetails] = useState(null);
+  const { wineId } = useParams();
+  const [wine, setWine] = useState(null);
+  const { fetchCartItems } = useCartStore();
 
   useEffect(() => {
-    if (selectedItem) {
-      fetch(`http://localhost:3000/wines/${selectedItem.id}`)
-        .then((response) => response.json())
-        .then((data) => setItemDetails(data))
-        .catch((error) => console.error("Error fetching item details:", error));
-    }
-  }, [selectedItem]);
+    const fetchWineDetails = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/wines/${wineId}`);
+        const data = await response.json();
+        setWine(data);
+      } catch (error) {
+        console.error('Error fetching wine details:', error);
+      }
+    };
+
+    fetchWineDetails();
+  }, [wineId]);
+
 
   const textColor = useColorModeValue("wine.red", "white"); 
 
-  function handleAddToCart(itemDetails) {
-    // Pass the itemDetails to the store
-    // This is where you might want to implement your cart functionality
-    console.log("Added to cart:", itemDetails);
-  }
+  const addToCart = async (item) => {
+    try {
+      // Add the "quantity" key with the initial value of 1 to the item object
+      const itemWithQuantity = { ...item, quantity: 1 };
+  
+      // Calculate the total price based on the item price and quantity
+      const totalPrice = item.price * itemWithQuantity.quantity;
+  
+      // Add the "total" key with the total price to the item object
+      const itemWithTotal = { ...itemWithQuantity, total: totalPrice };
+  
+      // Send the modified item object to the server
+      const response = await fetch('http://localhost:3000/cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(itemWithTotal),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to add item to cart');
+      }
+      alert('Item added to cart');
+    } catch (error) {
+      console.error('Error adding item to cart:', error);
+      alert('Item already in cart');
+    }
+    fetchCartItems();
+  };
+  
+  
 
   return (
     <Box pt='90px' maxW="100%" textAlign="center">
       <Text fontSize="2xl" fontWeight="bold" mb={2}>
         Details
       </Text>
-      {itemDetails ? (
+      {wine ? (
         <Flex alignItems='start' justifyContent='space-around'>
-          <Box>
+          <Box align='start'>
             <Image
-              src={itemDetails.url}
-              alt={itemDetails.name}
+              src={wine.url}
+              alt={wine.name}
               objectFit="cover"
               borderTopRadius="md"
               height="200px"
             />
-            <Button mt={14} mr={4} onClick={() => handleAddToCart(itemDetails)}>
+            <Button mt={14} mr={[0, 4]} mb={0} onClick={() => addToCart(wine)} w="full" maxW="200px">
               Add To Cart
             </Button>
+
             <Link to="/">
-              <Button mt={14}>
+              <Button mt={5} w="full" maxW="200px"
+              colorScheme="wine"
+              variant="outline"
+              _hover={{
+                bg: "wine.black",
+                color: "white",
+              }}
+              >
                 Back to Catalog
               </Button>
             </Link>
@@ -64,37 +107,37 @@ function Details() {
           >
             <VStack spacing={2} align="start" mt={4} px={4}>
               <Text fontSize="md" mb={1} color={textColor}>
-                Name: {itemDetails.name}
+                Name: {wine.name}
               </Text>
               <Text fontSize="md" mb={1} color={textColor}>
-                Type: {itemDetails.type}
+                Type: {wine.type}
               </Text>
               <Text fontSize="md" mb={1} color={textColor}>
-                Description: {itemDetails.description}
+                Description: {wine.description}
               </Text>
               <Text fontSize="md" mb={1} color={textColor}>
-                Food Pairing: {itemDetails.food_pairing}
+                Food Pairing: {wine.food_pairing}
               </Text>
               <Text fontSize="md" mb={1} color={textColor}>
-                Region: {itemDetails.region}
+                Region: {wine.region}
               </Text>
               <Text fontSize="md" mb={1} color={textColor}>
-                Vintage: {itemDetails.vintage}
+                Vintage: {wine.vintage}
               </Text>
               <Text fontSize="md" mb={1} color={textColor}>
-                Producer: {itemDetails.producer}
+                Producer: {wine.producer}
               </Text>
               <Text fontSize="md" mb={1} color={textColor}>
-                Alcohol by Volume: {itemDetails.abv}%
+                Alcohol by Volume: {wine.abv}%
               </Text>
               <Text fontSize="md" mb={1} color={textColor}>
-                Awards: {itemDetails.awards}
+                Awards: {wine.awards}
               </Text>
               <Text fontSize="md" mb={1} color={textColor}>
-                Availability: {itemDetails.availability}
+                Availability: {wine.availability}
               </Text>
               <Text fontSize="md" fontWeight="bold" mb={2} color={textColor}>
-                ${itemDetails.price}
+                ${wine.price}
               </Text>
             </VStack>
           </Box>
