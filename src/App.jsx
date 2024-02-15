@@ -10,20 +10,19 @@ import SignUp from "./components/SignUp";
 import Cart from "./components/Cart";
 import CheckOut from "./components/CheckOut";
 
-
 function App() {
   return (
     <ChakraProvider theme={theme}>
       <Router> 
         <Header />
         <Routes> 
-          <Route path="/" element={<Catalog/>} /> 
+          <Route path="/" element={<Catalog />} /> 
           <Route path="/product/:wineId" element={<Details />} /> 
           <Route path="/about" element={<About />} /> 
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<CheckOut />} />
+          <Route path="/checkout" element={<CheckOut />} /> {/* Change component to element */}
         </Routes>
       </Router>
     </ChakraProvider>

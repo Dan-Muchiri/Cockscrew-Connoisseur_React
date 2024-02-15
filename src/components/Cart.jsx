@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Box, Text, VStack, Image, Flex, Button, Badge, HStack } from "@chakra-ui/react";
 import useStore from '../store';
-import { Link } from "react-router-dom";
 
 function Cart() {
   const [cart, setCart] = useState([]);
   const [cartTotal, setCartTotal] = useState(0); // State to hold the total cart amount
-  const { fetchCartItems } = useStore();
+  const { fetchCartItems, fetchActiveUser, activeUser } = useStore();
 
   useEffect(() => {
     // Fetch cart items from db.json
@@ -14,6 +13,9 @@ function Cart() {
       .then((response) => response.json())
       .then((data) => setCart(data))
       .catch((error) => console.error("Error fetching cart items:", error));
+
+    // Fetch active user when component mounts
+    fetchActiveUser();
   }, []);
 
   useEffect(() => {
@@ -88,6 +90,19 @@ function Cart() {
     }
   };
 
+  const handleCheckout = async () => {
+    try {
+      if (activeUser) {
+        window.location.href = '/checkout';
+      } else {
+        alert('Please log in to proceed to checkout');
+        window.location.href = '/login';
+      }
+    } catch (error) {
+      console.error('Error checking active user:', error);
+    }
+  };
+  
   return (
     <Flex alignItems="center" justifyContent="center" direction="column" pt="75px">
       <Box mt={4} maxW="90%">
@@ -99,9 +114,18 @@ function Cart() {
             Your cart is empty
           </Text>
         ) : (<>
-             <Button as={Link} to='/checkout' position='absolute' right={0} top='14%' mr={[0, 4]} w="full" maxW="150px">
-            CheckOut
-          </Button>
+            <Button
+              position='absolute'
+              right={0}
+              top='14%'
+              mr={[0, 4]}
+              w="full"
+              maxW="150px"
+              onClick={handleCheckout} // Add onClick event handler
+            >
+              CheckOut
+            </Button>
+
           <Flex flexWrap="no-wrap" overflowX="auto" direction="row" gap={4} boxShadow="md" >
             {cart.map((item) => (
               <Box
