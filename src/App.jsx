@@ -9,6 +9,7 @@ import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Cart from "./components/Cart";
 import CheckOut from "./components/CheckOut";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<CheckOut />} /> {/* Change component to element */}
         </Routes>
+        <Footer />
       </Router>
     </ChakraProvider>
   );

@@ -88,7 +88,7 @@ function CheckOut() {
   
 
   return (
-    <Flex alignItems="center" justifyContent="center" height="100vh">
+    <Flex alignItems="center" justifyContent="center" minH="100vh">
       <Box minWidth="300px">
         <Formik
           initialValues={initialValues}
