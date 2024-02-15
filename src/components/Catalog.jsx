@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Box, Text, VStack, Image, Flex, Button, Input, Badge, HStack } from "@chakra-ui/react";
 import { InfoIcon, AddIcon } from '@chakra-ui/icons'; 
 import { Link } from "react-router-dom";
-import useCartStore from '../store';
+import useStore from '../store';
 
 function Catalog() {
   const [items, setItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const { fetchCartItems } = useCartStore();
+  const { addToCart } = useStore()
   
   useEffect(() => {
     fetch("http://localhost:3000/wines")
@@ -26,38 +26,6 @@ function Catalog() {
       item.producer.toLowerCase().includes(searchQueryLowerCase)
     );
   });
-
-  const addToCart = async (item) => {
-    try {
-      // Add the "quantity" key with the initial value of 1 to the item object
-      const itemWithQuantity = { ...item, quantity: 1 };
-  
-      // Calculate the total price based on the item price and quantity
-      const totalPrice = item.price * itemWithQuantity.quantity;
-  
-      // Add the "total" key with the total price to the item object
-      const itemWithTotal = { ...itemWithQuantity, total: totalPrice };
-  
-      // Send the modified item object to the server
-      const response = await fetch('http://localhost:3000/cart', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(itemWithTotal),
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to add item to cart');
-      }
-      alert('Item added to cart');
-    } catch (error) {
-      console.error('Error adding item to cart:', error);
-      alert('Item already in cart');
-    }
-    fetchCartItems();
-  };
-  
   
 
   return (

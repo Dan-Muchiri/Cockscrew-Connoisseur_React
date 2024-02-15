@@ -1,43 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Box, Flex, Heading, IconButton, Image, Icon, Text } from "@chakra-ui/react";
 import { FaCartPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import useCartStore from '../store';
+import useStore from '../store';
 
 function Header() {
   const bgColor = "white"
   const textColor ="wine.red"
 
-  const [activeUser, setActiveUser] = useState(null);
-  const { cartItems, fetchCartItems } = useCartStore();
+  const { cartItems, fetchCartItems, fetchActiveUser, activeUser, logout } = useStore();
 
   useEffect(() => {
-    const fetchActiveUser = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/active-user');
-        const userData = await response.json();
-        setActiveUser(userData[0].username);
-      } catch (error) {
-        console.log('Not logged in');
-      }
-    };
-
     fetchActiveUser();
     fetchCartItems();
   }, [cartItems]); // Trigger the effect whenever cartItems changes
 
   const handleLogout = async () => {
-    try {
-      await fetch('http://localhost:3000/active-user/1', {
-        method: 'DELETE',
-      });
-      setActiveUser(null);
-      alert('Thank you for shopping with us!')
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
+    logout(); // Call the logout function from useStore
   };
-
 
   return (
     <Box bg={bgColor} boxShadow="sm" py={1} position='fixed' w='100%' zIndex={10}>

@@ -1,14 +1,14 @@
-import { Box, Text, VStack, Image, Flex, Button } from "@chakra-ui/react";
+import React, { useEffect, useState } from 'react';
+import { Box, Flex, VStack, Image, Text, Button } from "@chakra-ui/react";
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from "react";
 import { useColorModeValue } from '@chakra-ui/react';
 import { Link } from "react-router-dom";
-import useCartStore from '../store';
+import useStore from '../store';
 
 function Details() {
   const { wineId } = useParams();
   const [wine, setWine] = useState(null);
-  const { fetchCartItems } = useCartStore();
+  const { addToCart } = useStore();
 
   useEffect(() => {
     const fetchWineDetails = async () => {
@@ -24,41 +24,7 @@ function Details() {
     fetchWineDetails();
   }, [wineId]);
 
-
   const textColor = useColorModeValue("wine.red", "white"); 
-
-  const addToCart = async (item) => {
-    try {
-      // Add the "quantity" key with the initial value of 1 to the item object
-      const itemWithQuantity = { ...item, quantity: 1 };
-  
-      // Calculate the total price based on the item price and quantity
-      const totalPrice = item.price * itemWithQuantity.quantity;
-  
-      // Add the "total" key with the total price to the item object
-      const itemWithTotal = { ...itemWithQuantity, total: totalPrice };
-  
-      // Send the modified item object to the server
-      const response = await fetch('http://localhost:3000/cart', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(itemWithTotal),
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to add item to cart');
-      }
-      alert('Item added to cart');
-    } catch (error) {
-      console.error('Error adding item to cart:', error);
-      alert('Item already in cart');
-    }
-    fetchCartItems();
-  };
-  
-  
 
   return (
     <Box pt='90px' maxW="100%" textAlign="center">

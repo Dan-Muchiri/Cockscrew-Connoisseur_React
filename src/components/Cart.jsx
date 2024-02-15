@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Box, Text, VStack, Image, Flex, Button, Badge, HStack } from "@chakra-ui/react";
-import useCartStore from '../store';
+import useStore from '../store';
 import { Link } from "react-router-dom";
 
 function Cart() {
   const [cart, setCart] = useState([]);
   const [cartTotal, setCartTotal] = useState(0); // State to hold the total cart amount
-  const { fetchCartItems } = useCartStore();
+  const { fetchCartItems } = useStore();
 
   useEffect(() => {
     // Fetch cart items from db.json
