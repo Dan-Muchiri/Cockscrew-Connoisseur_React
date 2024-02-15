@@ -1,10 +1,5 @@
 {
-  "active-user": [
-    {
-      "username": "Dan",
-      "id": 1
-    }
-  ],
+  "active-user": [],
   "users": [
     {
       "username": "Dan",
@@ -12,6 +7,20 @@
       "password": "12345678!q",
       "confirmPassword": "12345678!q",
       "id": 1
+    },
+    {
+      "username": "wolf",
+      "email": "wolf@gmail.com",
+      "password": "12345678!q",
+      "confirmPassword": "12345678!q",
+      "id": 2
+    },
+    {
+      "username": "owl",
+      "email": "owl@gmail.com",
+      "password": "12345678!q",
+      "confirmPassword": "12345678!q",
+      "id": 3
     }
   ],
   "cart": [],

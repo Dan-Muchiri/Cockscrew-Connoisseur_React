@@ -124,13 +124,6 @@ function CheckOut() {
                 Submit
               </Button>
 
-              {/* You can use Chakra UI Link component for better styling */}
-              <Text mt={2}>
-                Already have an account?{" "}
-                <Link as={ReactRouterLink} to="/login" color="teal.500">
-                  Log in
-                </Link>
-              </Text>
             </Form>
           )}
         </Formik>
