@@ -46,6 +46,7 @@ function Cart() {
       const updatedItem = await updateResponse.json();
       const updatedCart = cart.map(item => item.id === itemId ? updatedItem : item);
       setCart(updatedCart);
+      fetchCartItems();
     } catch (error) {
       console.error('Error increasing quantity:', error);
     }
@@ -68,7 +69,6 @@ function Cart() {
         }
         const updatedCart = cart.filter(item => item.id !== itemId);
         setCart(updatedCart);
-        fetchCartItems();
       } else {
         const totalPrice = item.price * updatedQuantity; // Calculate new total price
         const updateResponse = await fetch(`http://localhost:3000/cart/${itemId}`, {
@@ -85,6 +85,7 @@ function Cart() {
         const updatedCart = cart.map(item => item.id === itemId ? updatedItem : item);
         setCart(updatedCart);
       }
+      fetchCartItems();
     } catch (error) {
       console.error('Error decreasing quantity:', error);
     }

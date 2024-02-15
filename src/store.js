@@ -2,7 +2,7 @@
 import create from 'zustand';
 
 const useStore = create((set) => ({
-  cartItems: [],
+  cartItems: 0,
   activeUser: null,
   fetchActiveUser: async () => {
     try {
@@ -12,16 +12,27 @@ const useStore = create((set) => ({
     } catch (error) {
       console.log('Not logged in');
     }
+    
   },
   fetchCartItems: async () => {
     try {
-      const response = await fetch('http://localhost:3000/cart');
+      const response = await fetch("http://localhost:3000/cart");
+      if (!response.ok) {
+        throw new Error("Failed to fetch cart items");
+      }
       const cartData = await response.json();
-      set({ cartItems: cartData.length });
+      const totalQuantity = cartData.reduce(
+        (total, item) => total + item.quantity,
+        0
+      );
+      set({ cartItems: totalQuantity });
     } catch (error) {
-      console.error('Error fetching cart items:', error);
+      console.error("Error fetching cart items:", error);
+      // Handle error or set default value for cart items
+      set({ cartItems: 0 });
     }
   },
+  
   logout: async () => {
     try {
       await fetch('http://localhost:3000/active-user/1', {
