@@ -118,7 +118,7 @@ function Cart() {
             <Button
               position='absolute'
               right={0}
-              top='14%'
+              top='10%'
               mr={[0, 4]}
               w="full"
               maxW="150px"
